@@ -3,9 +3,9 @@ import { getChats, postChats, getChatsById, deleteChats, postChatsById } from ".
 
 const chatsRouter = Router();
 
-chatsRouter.get('', getChats),
+chatsRouter.get('', getChats);
 
-chatsRouter.post('', postChats),
+chatsRouter.post('', postChats);
 
 chatsRouter.get('/:id', getChatsById);
 

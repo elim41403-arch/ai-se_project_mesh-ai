@@ -3,8 +3,7 @@ import type { Request, Response, NextFunction } from "express";
 function errorHandler( 
     err: Error & { statusCode?: number },
     req: Request,
-    res: Response,
-    next: NextFunction
+    res: Response
 ):void {
     console.error(err);
         
@@ -20,8 +19,7 @@ function errorHandler(
 
 function notFoundHandler(
     req: Request,
-    res: Response,
-    next: NextFunction
+    res: Response
 ):void {
     res.status(404).json({
         success: false,

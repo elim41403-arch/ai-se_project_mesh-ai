@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(logger);
 app.use(router);
 
-app.get('/test-error', (req, res) => {
+app.get('/test-error', () => {
   throw new Error('Test error');
 });
 
