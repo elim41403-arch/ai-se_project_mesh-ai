@@ -13,4 +13,20 @@ const getCurrentUser = (req: Request, res: Response): void => {
     });
 };
 
-export { getCurrentUser };
+const postRegister = (req: Request, res: Response): void => {
+    res.status(201).json({
+        success: true,
+        data: {},
+        error: null
+    });
+};
+
+const postLogin = (req: Request, res: Response): void => {
+    res.status(200).json({
+        success: true,
+        data: {},
+        error: null
+    });
+};
+
+export { getCurrentUser, postRegister, postLogin };

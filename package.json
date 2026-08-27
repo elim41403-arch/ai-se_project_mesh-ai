@@ -21,6 +21,7 @@
     "dev": "nodemon --exec tsx src/index.ts",
     "lint": "eslint src/"
   },
+  "part": "1",
   "dependencies": {
     "express": "^5.2.1"
   },
