@@ -1,4 +1,4 @@
-import type { Request, Response, NextFunction } from "express";
+import type { Request, Response } from "express";
 
 function errorHandler( 
     err: Error & { statusCode?: number },
