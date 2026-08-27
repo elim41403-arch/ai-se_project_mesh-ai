@@ -8,7 +8,7 @@ const getChats = (req: Request, res: Response): void => {
     });
 };
 
-const postChats = (req: Request, res: Response): void => {
+const postChat = (req: Request, res: Response): void => {
     res.status(201).json({
         success: true,
         data: {},
@@ -16,7 +16,7 @@ const postChats = (req: Request, res: Response): void => {
     });
 };
 
-const getChatsById = (req: Request, res: Response): void => {
+const getChatById = (req: Request, res: Response): void => {
     res.status(200).json({
         success: true,
         data: {},
@@ -24,12 +24,12 @@ const getChatsById = (req: Request, res: Response): void => {
     });
 };
 
-const deleteChats = (req: Request, res: Response): void => {
+const deleteChat = (req: Request, res: Response): void => {
     res.status(204).json({
     });
 };
 
-const postChatsById = (req: Request, res: Response): void => {
+const postChatById = (req: Request, res: Response): void => {
     res.status(201).json({
         success: true,
         data: {},
@@ -37,4 +37,4 @@ const postChatsById = (req: Request, res: Response): void => {
     });
 };
 
-export { getChats, postChats, getChatsById, deleteChats, postChatsById };
+export { getChats, postChat, getChatById, deleteChat, postChatById };

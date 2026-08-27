@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 
-const postDocuments = (req: Request, res: Response): void => {
+const postDocument = (req: Request, res: Response): void => {
     res.status(201).json({
         success: true,
         data: {},
@@ -16,7 +16,7 @@ const getDocuments = (req: Request, res: Response): void => {
     });
 };
 
-const getDocumentsById = (req: Request, res: Response): void => {
+const getDocumentById = (req: Request, res: Response): void => {
     res.status(200).json({
         success: true,
         data: {},
@@ -24,9 +24,9 @@ const getDocumentsById = (req: Request, res: Response): void => {
     });
 };
 
-const deleteDocuments = (req: Request, res: Response): void => {
+const deleteDocument = (req: Request, res: Response): void => {
     res.status(204).json({
     });
 };
 
-export { postDocuments, getDocuments, getDocumentsById, deleteDocuments };
+export { postDocument, getDocuments, getDocumentById, deleteDocument };

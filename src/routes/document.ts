@@ -1,14 +1,14 @@
 import { Router } from "express";
-import { getDocuments, postDocuments, getDocumentsById, deleteDocuments } from "../controllers/documents.js";
+import { getDocuments, postDocument, getDocumentById, deleteDocument } from "../controllers/documents.js";
 
 const documentRouter = Router();
 
-documentRouter.post('', postDocuments);
+documentRouter.post('', postDocument);
 
 documentRouter.get('', getDocuments);
 
-documentRouter.get('/:id', getDocumentsById);
+documentRouter.get('/:id', getDocumentById);
 
-documentRouter.delete('/:id', deleteDocuments);
+documentRouter.delete('/:id', deleteDocument);
 
 export { documentRouter };
