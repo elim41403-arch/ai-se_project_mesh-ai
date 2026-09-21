@@ -1,25 +1,53 @@
 import type { Request, Response } from "express";
+import Chat from "../models/chats.js";
+import Message from "../models/message.js";
 
-const getChats = (req: Request, res: Response): void => {
+const getChats = async (req: Request, res: Response): Promise<void> => {
+    const chats = await Chat.find({ userId: req.user!.userId });
+
     res.status(200).json({
         success: true,
-        data: {},
+        data: chats,
         error: null
     });
 };
 
-const postChat = (req: Request, res: Response): void => {
+const createChat = (req: Request, res: Response): void => {
+    const { title } = req.body;
+
+    if(!title) {
+        res.status(400).json({
+            success: false,
+            data: null,
+            error: { message: 'title is required' },
+        });
+        return;
+    }
     res.status(201).json({
         success: true,
-        data: {},
-        error: null
+        data: title,
+        error: null,
     });
 };
 
-const getChatById = (req: Request, res: Response): void => {
+const getChat = async (req: Request, res: Response): Promise<void> => {
+    const userId = req.user!.userId;
+    const chat = await Chat.findOne({ _id: req.params.id, userId });
+
+    if(!chat){
+        res.status(404).json({
+            success: false,
+            data: null,
+            error: { message: 'no chat found' },
+        });
+        return;
+    }
+
+    const messages = await Message.find({ chatId: chat._id });
+
     res.status(200).json({
         success: true,
-        data: {},
+        data: { chat, messages },
         error: null
     });
 };
@@ -29,12 +57,4 @@ const deleteChat = (req: Request, res: Response): void => {
     });
 };
 
-const postChatById = (req: Request, res: Response): void => {
-    res.status(201).json({
-        success: true,
-        data: {},
-        error: null
-    });
-};
-
-export { getChats, postChat, getChatById, deleteChat, postChatById };
+export { getChats, createChat, getChat, deleteChat };

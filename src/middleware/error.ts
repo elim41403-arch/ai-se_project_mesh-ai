@@ -11,9 +11,9 @@ function errorHandler(
     const message =  statusCode === 500 ? "An error has ovvured on the server" : err.message;
 
     res.status(statusCode).json({
-        sucsess: false,
+        success: false,
         data: null,
-        error: message,
+        error: { message },
     });
 }
 
@@ -24,7 +24,7 @@ function notFoundHandler(
     res.status(404).json({
         success: false,
         data: null,
-        error: `Route ${req.method} ${req.path} not found`
+        error: { message: `Route ${req.method} ${req.path} not found`},
     });
 }
 
