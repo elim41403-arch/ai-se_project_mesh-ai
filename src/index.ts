@@ -14,10 +14,6 @@ app.use(express.json());
 app.use(logger);
 app.use(router);
 
-app.get('/test-error', () => {
-  throw new Error('Test error');
-});
-
 app.get("/health", (req, res): void => {
     res.status(200).json({
         "success": true,

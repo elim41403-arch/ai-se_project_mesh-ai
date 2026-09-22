@@ -50,7 +50,7 @@ export const createMessage = async (req: Request, res: Response): Promise<void> 
       model: LLM_MODEL,
       messages: [
         {
-          role: 'system',
+            role: 'system',
           content:
             'You are a helpful research assistant. Answer the question using only the provided context. If the context does not contain enough information to answer, say so.',
         },
@@ -64,21 +64,23 @@ export const createMessage = async (req: Request, res: Response): Promise<void> 
   
     const answer = response.choices[0]!.message.content ?? 'No answer returned.';
     
-    const questionMessage = await Message.create({
-      chatId: chat._id,
+    const [questionMessage, answerMessage] = await Message.create([
+      {
+        chatId: chat._id,
         role: 'user',
-      content: question,
-    });
-    const answerMessage = await Message.create({
-      chatId: chat._id,
+        content: question,
+      },
+      {
+        chatId: chat._id,
         role: 'assistant',
-      content: answer,
-    });
+        content: answer,
+      },
+    ]);
 
     res.status(201).json({
         success: true,
         data: { messages: [questionMessage, answerMessage] },
         error: null,
-    })
+    });
 
 };

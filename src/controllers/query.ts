@@ -54,7 +54,7 @@ const postQuery = async (req: Request, res: Response) => {
 
   res.status(200).json({
     success: true,
-    data: { question, chunks: ranked, answer },
+    data: { answer },
     error: null,
   });
 };

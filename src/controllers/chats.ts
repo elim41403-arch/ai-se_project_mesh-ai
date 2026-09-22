@@ -12,7 +12,7 @@ const getChats = async (req: Request, res: Response): Promise<void> => {
     });
 };
 
-const createChat = (req: Request, res: Response): void => {
+const createChat = async (req: Request, res: Response): Promise<void> => {
     const { title } = req.body;
 
     if(!title) {
@@ -23,9 +23,14 @@ const createChat = (req: Request, res: Response): void => {
         });
         return;
     }
+    const chat = await Chat.create({
+        title,
+        userId: req.user!.userId,
+    });
+
     res.status(201).json({
         success: true,
-        data: title,
+        data: chat,
         error: null,
     });
 };
@@ -52,8 +57,27 @@ const getChat = async (req: Request, res: Response): Promise<void> => {
     });
 };
 
-const deleteChat = (req: Request, res: Response): void => {
-    res.status(204).json({
+const deleteChat = async (req: Request, res: Response): Promise<void> => {
+    const chat = await Chat.findOneAndDelete({
+        _id: req.params.id,
+        userId: req.user!.userId,
+    });
+
+    if (!chat) {
+        res.status(404).json({
+            success: false,
+            data: null,
+            error: { message: 'no chat found' },
+        });
+        return;
+    }
+
+    await Message.deleteMany({ chatId: chat._id });
+
+    res.status(200).json({
+        success: true,
+        data: null,
+        error: null,
     });
 };
 
