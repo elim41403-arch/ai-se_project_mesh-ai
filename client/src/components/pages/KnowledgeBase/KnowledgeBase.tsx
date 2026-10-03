@@ -50,7 +50,7 @@ export default function KnowledgeBase() {
           {!isLoading && !error && documents.length > 0 && (
             documents.map((doc) => (
               <li key={doc._id} className="document-list__item">
-                <p className="document__title">{doc.fileName}</p>
+                <p className="document__title">{doc.title}</p>
                 <button 
                   className="document__delete-button"
                   aria-label="Delete this document"
