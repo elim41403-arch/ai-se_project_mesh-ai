@@ -1,0 +1,77 @@
+/* In Intro.css */
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  /* Stretch to fit viewport vertically */
+  flex-grow: 1;
+
+  /* Center vertically */
+  justify-content: center;
+
+  /* Center horizontally */
+  margin: 0 auto;
+}
+
+.intro p {
+  font-family: sans-serif;
+}
+
+.intro__message {
+  font-size: 20px;
+  line-height: 1;
+  color: #1c1c1c;
+  margin-bottom: 16px;
+}
+
+.onboarding-cards {
+  display: flex;
+  margin: 32px auto;
+  gap: 20px;
+}
+
+.onboarding-card__container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 210px;
+  height: 236px;
+  border-radius: 16px;
+  padding: 15px 12px;
+  background-color: #f6f3ff;
+}
+
+.onboarding-card_icon {
+  width: 106px;
+}
+
+.onboarding-card_description {
+  font-size: 16px;
+  color: #1c1c1c;
+  line-height: 1.2;
+  margin-top: 23px;
+  text-align: left;
+}
+
+.intro__start-button {
+  width: 77px;
+  height: 44px;
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: #ffffff;
+  background-color: #1c1c1c;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.intro__start-button:hover {
+  background:
+    linear-gradient(
+      360deg,
+      rgba(150, 121, 217, 0.4) 0%,
+      rgba(150, 121, 217, 0) 100%
+    ),
+    linear-gradient(0deg, #1c1c1c, #1c1c1c);
+}
