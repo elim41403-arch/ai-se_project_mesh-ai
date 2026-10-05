@@ -1,11 +1,16 @@
 import "./Chat.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from 'react-markdown';
 import { getChats, createChat, getChat, sendMessage } from "../../utils/api";
 import type { Chat as ChatType, Message } from '../../utils/api';
 import ErrorIcon from "../../../assets/error.svg";
 import Send from "../../../assets/sendButton.svg";
+
+  type MobileContext = {
+    isMobileMenuOpen: boolean;
+    setIsMobileMenuOpen: (open: boolean) => void;
+  }
 
 export default function Chat() {
   const navigate = useNavigate();
@@ -24,6 +29,8 @@ export default function Chat() {
   const [isSending, setIsSending]= useState<boolean>(false);
   const messagesRef = useRef<HTMLUListElement>(null);
   const shouldScrollToLatest = useRef(false);
+
+  const { isMobileMenuOpen, setIsMobileMenuOpen } = useOutletContext<MobileContext>();
 
   useEffect(() => {
     if (!shouldScrollToLatest.current) {
@@ -87,6 +94,7 @@ export default function Chat() {
       const newChat = (res.data);
       setChats((prev) => [newChat!, ...prev])
       setActiveChatId(newChat._id);
+      setIsMobileMenuOpen(false);
       }
     } catch {
     // A toast or inline error could go here in the future
@@ -140,7 +148,11 @@ export default function Chat() {
 
   return (
   <div className="chat">
-    <aside className="chat__sidebar">
+    <aside
+      className={`chat__sidebar${
+       isMobileMenuOpen ? ' chat__sidebar_open' : ''
+     }`}
+>
       <button className="chat__new-btn" type="button" onClick={() => setIsCreatingChat(true)}>
         + New Chat
       </button>
@@ -175,7 +187,10 @@ export default function Chat() {
              ? 'chat__item chat__item_active'
               : 'chat__item'
             }
-           onClick={() => setActiveChatId(c._id)}
+           onClick={() => {
+            setActiveChatId(c._id);
+            setIsMobileMenuOpen(false);
+          }}
           >
             {c.title}
           </li>
@@ -187,7 +202,7 @@ export default function Chat() {
       {!messagesError && !isLoadingMessages && !activeChatId && (
         <div className="chat__no-messages">
           <p>Create a new chat or select an existing one to start the conversation</p>
-          <button className="chat__btn" type="button" onClick={() => setIsCreatingChat(true)}>
+          <button className="chat__btn" type="button" onClick={() => {setIsCreatingChat(true); setIsMobileMenuOpen(true);}}>
         Start New Chat
       </button>
         </div>

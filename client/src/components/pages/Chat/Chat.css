@@ -63,7 +63,7 @@
   padding: 7px 9px;
   border-radius: 4px;
   color: #29272d;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.25;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -243,12 +243,13 @@
   top: 9px;
   right: 10px;
   display: grid;
-  width: 18px;
-  height: 18px;
+
   border-radius: 1.5px;
 }
 
 .chat__send-btn {
+  width: 18px;
+  height: 18px;
   opacity: 0.5;
 }
 
@@ -283,4 +284,70 @@
 
 .chat__error p {
   font-size: 20px;
+}
+
+@media (max-width: 1200px) {
+  .chat__main {
+    height: calc(100vh - 78px);
+    min-height: 0;
+  }
+
+  .chat__messages {
+    padding-bottom: 141px;
+  }
+
+  .chat__input-bar {
+    position: fixed;
+    z-index: 5;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    margin: 0;
+    transform: translateX(-50%);
+    height: 141px;
+    background-color: #ffffff;
+    padding: 17px 16px 24px;
+    border: 0.7px solid #e5e7eb;
+  }
+
+  .chat__send {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 27px;
+    right: 32px;
+  }
+
+  .chat__send-btn {
+    width: 24px;
+    height: 24px;
+  }
+
+  .chat__sidebar {
+    position: fixed;
+    top: 47px; /* match header height */
+    left: 0;
+    bottom: 0;
+    width: 75%;
+    height: 70%;
+    max-width: 255px;
+    z-index: 102;
+    background: #fff;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .chat__sidebar_open {
+    transform: translateX(0);
+  }
+
+  /* Remove desktop margin-left offsets */
+  .chat__messages,
+  .chat__input-bar {
+    margin-left: 0;
+  }
 }

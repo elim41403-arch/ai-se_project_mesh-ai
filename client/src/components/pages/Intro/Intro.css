@@ -75,3 +75,76 @@
     ),
     linear-gradient(0deg, #1c1c1c, #1c1c1c);
 }
+
+@media (max-width: 1200px) {
+  .intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: calc(100% - 16px);
+    height: 100vh;
+    min-height: calc(100dvh - 56px);
+    margin: 0 auto;
+    padding: 18px 18px 22px;
+    background: #fff;
+  }
+
+  .intro__heading {
+    display: block;
+    width: min(280px, 82%);
+    height: auto;
+    margin: 28px auto 36px;
+  }
+
+  .onboarding-cards {
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+    gap: 13px;
+  }
+
+  .onboarding-card__container {
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    min-height: 155px;
+    height: auto;
+    padding: 18px 22px;
+    border-radius: 18px;
+    gap: 20px;
+    background-color: #f6f3ff;
+  }
+
+  .onboarding-card_icon {
+    flex: 0 0 110px;
+    width: 110px;
+    max-height: 112px;
+    object-fit: contain;
+  }
+
+  .onboarding-card_description {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.25;
+  }
+
+  .intro__message {
+    margin: 42px 0 0;
+    color: #1c1c1c;
+    font-size: 20px;
+    line-height: 1.25;
+    text-align: center;
+  }
+
+  .intro__start-button {
+    width: 100%;
+    min-height: 57px;
+    height: auto;
+    margin-top: 30px;
+    margin-bottom: 36px;
+    border-radius: 9px;
+    font-size: 18px;
+  }
+}
