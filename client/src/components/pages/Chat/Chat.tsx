@@ -2,8 +2,8 @@ import "./Chat.css";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from 'react-markdown';
-import { getChats, createChat, getChat, sendMessage } from "../../utils/api";
-import type { Chat as ChatType, Message } from '../../utils/api';
+import { getChats, createChat, getChat, sendMessage } from "../../../utils/api";
+import type { Chat as ChatType, Message } from '../../../utils/api';
 import ErrorIcon from "../../../assets/error.svg";
 import Send from "../../../assets/sendButton.svg";
 

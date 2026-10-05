@@ -1,6 +1,6 @@
 import "./KnowledgeBase.css";
 import { useState, useEffect } from "react";
-import { getDocuments, type KnowledgeDoc } from "../../utils/api";
+import { getDocuments, type KnowledgeDoc } from "../../../utils/api";
 import UploadArea from "../../UploadArea/UploadArea";
 import deleteButton from "../../../assets/deleteButton.svg";
 
