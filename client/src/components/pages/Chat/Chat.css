@@ -111,6 +111,7 @@
 }
 
 .chat__message_user {
+  text-align: start;
   align-self: flex-end;
   max-width: 78%;
   padding: 8px 10px;

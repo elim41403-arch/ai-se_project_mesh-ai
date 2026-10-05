@@ -25,9 +25,10 @@ export default function Header({ onMenuOpen, onMenuClose, isMobileMenuOpen }: Pr
       <button
         type="button"
         className="header__menu-btn"
-        aria-label="Open menu"
-        onClick={onMenuOpen}
-      ><img src={Menu} alt=""/></button>
+        aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+        aria-expanded={isMobileMenuOpen}
+        onClick={isMobileMenuOpen ? onMenuClose : onMenuOpen}
+      ><img src={Menu} alt="Menu button" /></button>
         <img src={Logo} alt="Mesh AI logo" className="header__logo" />
         <nav className={isMobileMenuOpen ? 'header__nav header__nav_mobile' : 'header__nav'}>
         <NavLink to="/knowledge" className={getNavLinkClass} onClick={onMenuClose}>Knowledge Base</NavLink>

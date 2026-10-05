@@ -1,6 +1,6 @@
 import "./KnowledgeBase.css";
 import { useState, useEffect } from "react";
-import { getDocuments, type KnowledgeDoc } from "../../../utils/api";
+import { getDocuments, type KnowledgeDoc } from "../../../utils/api.ts";
 import UploadArea from "../../UploadArea/UploadArea";
 import deleteButton from "../../../assets/deleteButton.svg";
 
@@ -57,7 +57,7 @@ export default function KnowledgeBase() {
                   >
                   <img 
                     src={deleteButton}
-                    alt=""
+                    alt="Delete Button"
                     className="document__delete-icon"
                     />
                   </button>
