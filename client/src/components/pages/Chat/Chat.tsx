@@ -1,10 +1,11 @@
 import "./Chat.css";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from 'react-markdown';
-import { getChats, createChat, getChat } from "../../utils/api";
-import type { Chat as ChatType, Message } from '../../utils/api'
-import ErrorIcon from "../../../assets/error.svg"
+import { getChats, createChat, getChat, sendMessage } from "../../utils/api";
+import type { Chat as ChatType, Message } from '../../utils/api';
+import ErrorIcon from "../../../assets/error.svg";
+import Send from "../../../assets/sendButton.svg";
 
 export default function Chat() {
   const navigate = useNavigate();
@@ -19,6 +20,25 @@ export default function Chat() {
   const [isLoadingMessages, setIsLoadingMessages] = useState<boolean>(false);
   const [messagesError, setMessagesError] = useState<string>("");
 
+  const [input, setInput] = useState<string>("");
+  const [isSending, setIsSending]= useState<boolean>(false);
+  const messagesRef = useRef<HTMLUListElement>(null);
+  const shouldScrollToLatest = useRef(false);
+
+  useEffect(() => {
+    if (!shouldScrollToLatest.current) {
+      return;
+    }
+
+    shouldScrollToLatest.current = false;
+    const messageList = messagesRef.current;
+    if (messageList) {
+      messageList.scrollTo({
+        top: messageList.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [messages]);
 
   useEffect(() => {
     const load = async () => {
@@ -70,6 +90,51 @@ export default function Chat() {
       }
     } catch {
     // A toast or inline error could go here in the future
+    }
+  };
+
+  const handleSend = async () => {
+    const text = input.trim();
+    if (!text || !activeChatId || isSending) return;
+
+    const userMessage: Message = {
+      _id: Date.now().toString(),
+      chatId: activeChatId,
+      role: "user",
+      content: text,
+      createdAt: new Date().toISOString(),
+    };
+
+    shouldScrollToLatest.current = true;
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    setIsSending(true);
+
+    try {
+      const res = await sendMessage(activeChatId, text);
+      if (res.data) {
+        shouldScrollToLatest.current = true;
+        setMessages((prev) => [...prev, res.data!]);
+      }
+    } catch {
+      const errorMessage: Message = {
+        _id: Date.now().toString(),
+        chatId: activeChatId,
+        role: 'assistant',
+        content: 'Something went wrong. Please try again.',
+        createdAt: new Date().toISOString(),
+      };
+      shouldScrollToLatest.current = true;
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
     }
   };
 
@@ -150,19 +215,44 @@ export default function Chat() {
       )}
 
       {activeChatId && !isLoadingMessages && !messagesError && (
-        <ul className="chat__messages">
-          {messages.map((m) => (
-          <li key={m._id} 
-            className={
-             m.role === 'user'
-             ? 'chat__message chat__message_user'
-              : 'chat__message chat__message_assistant'
-            }
-          >
-            <ReactMarkdown>{m.content}</ReactMarkdown>
-          </li>
-        ))}
-        </ul>
+        <div>
+          <ul className="chat__messages" ref={messagesRef}>
+            {messages.map((m) => (
+            <li key={m._id} 
+              className={
+              m.role === 'user'
+              ? 'chat__message chat__message_user'
+                : 'chat__message chat__message_assistant'
+              }
+            >
+              <ReactMarkdown>{m.content}</ReactMarkdown>
+            </li>
+          ))}
+          
+          </ul>
+          <div className="chat__input-bar">
+            <textarea
+              className="chat__input"
+              value={input}
+              disabled={isSending}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Ask any question"
+
+              rows={1}
+            />
+            <button
+              className="chat__send"
+              disabled={isSending || !input.trim()}
+              aria-label="Send message"
+              onClick={() => handleSend()}
+            ><img 
+                src={Send}
+                alt=""
+                className="chat__send-btn"
+              /></button>
+          </div>
+        </div>
       )}
     </div>
   </div>
