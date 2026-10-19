@@ -1,6 +1,6 @@
 import "./KnowledgeBase.css";
 import { useState, useEffect } from "react";
-import { getDocuments, uploadDocument, type KnowledgeDoc } from "../../utils/api.ts";
+import { deleteDocument, getDocuments, uploadDocument, type KnowledgeDoc } from "../../utils/api.ts";
 import UploadArea from "../../components/UploadArea/UploadArea";
 import deleteButton from "../../assets/deleteButton.svg";
 
@@ -9,6 +9,21 @@ export default function KnowledgeBase() {
   const [isLoading, setIsLoading] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [deletingDocumentId, setDeletingDocumentId] = useState<string | null>(null);
+
+  const handleDelete = async (id: string) => {
+    setDeletingDocumentId(id);
+    setDeleteError(null);
+    try {
+      await deleteDocument(id);
+      setDocuments((currentDocuments) => currentDocuments.filter((doc) => doc._id !== id));
+    } catch {
+      setDeleteError("Failed to delete document");
+    } finally {
+      setDeletingDocumentId(null);
+    }
+  };
 
   const handleFileSelect = async (file: File) => {
     setIsUploading(true);
@@ -59,6 +74,8 @@ export default function KnowledgeBase() {
                 <button 
                   className="document__delete-button"
                   aria-label="Delete this document"
+                  disabled={deletingDocumentId !== null}
+                  onClick={() => handleDelete(doc._id)}
                   >
                   <img 
                     src={deleteButton}
@@ -69,6 +86,10 @@ export default function KnowledgeBase() {
               </li>
             ))
         )}
+
+          {deleteError && (
+            <p className="error-message">{deleteError}</p>
+          )}
 
           {!isLoading && error && (
             <p className="error-message">Failed to load documents.</p>

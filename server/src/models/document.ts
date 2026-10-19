@@ -9,6 +9,9 @@ const documentSchema = new Schema({
         type: String,
         required: true,
     },
+    storagePath:{
+        type: String,
+    },
     userId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

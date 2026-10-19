@@ -1,9 +1,10 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 
 function errorHandler( 
     err: Error & { statusCode?: number },
     req: Request,
-    res: Response
+    res: Response,
+    _next: NextFunction
 ):void {
     console.error(err);
         

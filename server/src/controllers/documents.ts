@@ -1,6 +1,8 @@
 import type { Request, Response } from "express";
 import Document from "../models/document.js";
-import { readFileSync } from 'fs';
+import { readFileSync } from 'node:fs';
+import { unlink } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { PDFParse } from 'pdf-parse';
 import Chunk from '../models/chunk.js';
 import { chunkText } from '../utils/chunk.js';
@@ -25,6 +27,7 @@ const uploadDocument = async (req: Request, res: Response): Promise<void> => {
     const document = await Document.create({
         title,
         fileName: req.file.originalname,
+        storagePath: resolve(req.file.path),
         userId: req.user!.userId,
     });
 
@@ -75,7 +78,7 @@ const getDocumentById = async (req: Request, res: Response): Promise<void> => {
 };
 
 const deleteDocument = async (req: Request, res: Response): Promise<void> => {
-    const document = await Document.findOneAndDelete({
+    const document = await Document.findOne({
         _id: req.params.id,
         userId: req.user!.userId,
     });
@@ -89,6 +92,17 @@ const deleteDocument = async (req: Request, res: Response): Promise<void> => {
         return;
     }
 
+    if (document.storagePath) {
+        try {
+            await unlink(document.storagePath);
+        } catch (error) {
+            if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+                throw error;
+            }
+        }
+    }
+
+    await document.deleteOne();
     await Chunk.deleteMany({ documentId: document._id });
 
     res.status(200).json({
