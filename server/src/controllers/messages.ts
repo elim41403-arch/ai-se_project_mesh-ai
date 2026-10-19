@@ -5,7 +5,7 @@ import Chunk from "../models/chunk.js";
 import Document from "../models/document.js";
 import Chat from "../models/chats.js";
 import Message from "../models/message.js";
-import { LLM_MODEL, getClient, buildContext } from "../utils/openai-client.js";
+import { LLM_MODEL, getClient, buildContext, stripThinking } from "../utils/openai-client.js";
 
 export const createMessage = async (req: Request, res: Response): Promise<void> => {
   const { question } = req.body;
@@ -62,7 +62,7 @@ export const createMessage = async (req: Request, res: Response): Promise<void> 
       temperature: 0.2,
     });
   
-    const answer = response.choices[0]!.message.content ?? 'No answer returned.';
+    const answer = stripThinking(response.choices[0]!.message.content ?? '') || 'No answer returned.';
     
     const [questionMessage, answerMessage] = await Message.create([
       {

@@ -76,7 +76,7 @@
     linear-gradient(0deg, #1c1c1c, #1c1c1c);
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 700px) {
   .intro {
     display: flex;
     flex-direction: column;

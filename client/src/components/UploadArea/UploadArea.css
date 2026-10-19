@@ -26,6 +26,11 @@
   text-decoration: none;
 }
 
+.upload-area_disabled .upload-area__label {
+  cursor: default;
+  pointer-events: none;
+}
+
 .upload-area__label_icon {
   margin: 0 auto 11px;
   opacity: 0.5;
@@ -33,6 +38,10 @@
 
 .upload-area__label:hover {
   color: rgba(28, 28, 28);
+}
+
+.upload-area_disabled .upload-area__label:hover {
+  color: rgba(28, 28, 28, 0.5);
 }
 
 .upload-area__label:hover .upload-area__label_icon {

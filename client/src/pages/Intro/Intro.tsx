@@ -1,8 +1,8 @@
 import "./Intro.css";
-import Heading from "../../../assets/Heading.png";
-import Card1 from "../../../assets/onboardingCards/onboardingCard1.svg"
-import Card2 from "../../../assets/onboardingCards/onboardingCard2.svg"
-import Card3 from "../../../assets/onboardingCards/onboardingCard3.png"
+import Heading from "../../assets/Heading.png";
+import Card1 from "../../assets/onboardingCards/onboardingCard1.svg"
+import Card2 from "../../assets/onboardingCards/onboardingCard2.svg"
+import Card3 from "../../assets/onboardingCards/onboardingCard3.png"
 import { useNavigate } from "react-router-dom";
 
 export default function Intro() {

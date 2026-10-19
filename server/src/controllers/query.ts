@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import Chunk from '../models/chunk.js';
 import { createEmbedding } from '../utils/embeddings.js';
 import { rankBySimilarity } from '../utils/vector-search.js';
-import { getClient, LLM_MODEL, buildContext } from '../utils/openai-client.js';
+import { getClient, LLM_MODEL, buildContext, stripThinking } from '../utils/openai-client.js';
 import Document from '../models/document.js';
 
 const postQuery = async (req: Request, res: Response) => {
@@ -50,7 +50,7 @@ const postQuery = async (req: Request, res: Response) => {
     temperature: 0.2,
   });
 
-  const answer = response.choices[0]!.message.content ?? 'No answer returned.';
+  const answer = stripThinking(response.choices[0]!.message.content ?? '') || 'No answer returned.';
 
   res.status(200).json({
     success: true,

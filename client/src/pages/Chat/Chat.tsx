@@ -2,10 +2,10 @@ import "./Chat.css";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from 'react-markdown';
-import { getChats, createChat, getChat, sendMessage } from "../../../utils/api.ts";
-import type { Chat as ChatType, Message } from '../../../utils/api.ts';
-import ErrorIcon from "../../../assets/error.svg";
-import Send from "../../../assets/sendButton.svg";
+import { getChats, createChat, getChat, sendMessage } from "../../utils/api.ts";
+import type { Chat as ChatType, Message } from '../../utils/api.ts';
+import ErrorIcon from "../../assets/error.svg";
+import Send from "../../assets/sendButton.svg";
 
   type MobileContext = {
     isMobileMenuOpen: boolean;
@@ -27,24 +27,12 @@ export default function Chat() {
 
   const [input, setInput] = useState<string>("");
   const [isSending, setIsSending]= useState<boolean>(false);
-  const messagesRef = useRef<HTMLUListElement>(null);
-  const shouldScrollToLatest = useRef(false);
+  const messagesEndRef = useRef<HTMLLIElement>(null);
 
   const { isMobileMenuOpen, setIsMobileMenuOpen } = useOutletContext<MobileContext>();
 
   useEffect(() => {
-    if (!shouldScrollToLatest.current) {
-      return;
-    }
-
-    shouldScrollToLatest.current = false;
-    const messageList = messagesRef.current;
-    if (messageList) {
-      messageList.scrollTo({
-        top: messageList.scrollHeight,
-        behavior: "smooth",
-      });
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages]);
 
   useEffect(() => {
@@ -113,17 +101,18 @@ export default function Chat() {
       createdAt: new Date().toISOString(),
     };
 
-    shouldScrollToLatest.current = true;
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsSending(true);
-
-    try {
-      const res = await sendMessage(activeChatId, text);
-      if (res.data) {
-        shouldScrollToLatest.current = true;
-        setMessages((prev) => [...prev, res.data!]);
-      }
+    
+      try {
+        const res = await sendMessage(activeChatId, text);
+        if (res.data) {
+        setMessages((prev) => [
+            ...prev.filter((m) => m._id !== userMessage._id),
+            ...res.data?.messages!,
+        ]);
+        }
     } catch {
       const errorMessage: Message = {
         _id: Date.now().toString(),
@@ -132,7 +121,6 @@ export default function Chat() {
         content: 'Something went wrong. Please try again.',
         createdAt: new Date().toISOString(),
       };
-      shouldScrollToLatest.current = true;
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsSending(false);
@@ -231,7 +219,7 @@ export default function Chat() {
 
       {activeChatId && !isLoadingMessages && !messagesError && (
         <div>
-          <ul className="chat__messages" ref={messagesRef}>
+          <ul className="chat__messages">
             {messages.map((m) => (
             <li key={m._id} 
               className={
@@ -243,7 +231,12 @@ export default function Chat() {
               <ReactMarkdown>{m.content}</ReactMarkdown>
             </li>
           ))}
-          
+            {isSending && (
+              <li className="chat__message chat__message_assistant chat__message_thinking">
+                Thinking…
+              </li>
+            )}
+            <li ref={messagesEndRef} />
           </ul>
           <div className="chat__input-bar">
             <textarea

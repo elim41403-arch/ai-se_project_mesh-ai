@@ -1,24 +1,28 @@
 import "./KnowledgeBase.css";
 import { useState, useEffect } from "react";
-import { getDocuments, type KnowledgeDoc } from "../../../utils/api.ts";
-import UploadArea from "../../UploadArea/UploadArea";
-import deleteButton from "../../../assets/deleteButton.svg";
+import { getDocuments, uploadDocument, type KnowledgeDoc } from "../../utils/api.ts";
+import UploadArea from "../../components/UploadArea/UploadArea";
+import deleteButton from "../../assets/deleteButton.svg";
 
 export default function KnowledgeBase() {
   const [documents, setDocuments] = useState<KnowledgeDoc[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleFileSelect = (file: File) => {
-    const newDoc: KnowledgeDoc = {
-      _id: Date.now().toString(),
-      title: file.name,
-      fileName: file.name,
-      userId: 'local',
-      createdAt: new Date().toISOString(),
-    };
-    setDocuments([newDoc, ...documents]);
-  };
+  const handleFileSelect = async (file: File) => {
+    setIsUploading(true);
+    try {
+    const res = await uploadDocument(file);
+    if (res.data) {
+      setDocuments([res.data, ...documents]);
+    }
+    } catch {
+      setError('Failed to upload document');
+    } finally {
+    setIsUploading(false);
+    }
+};
 
   useEffect(() => {
   const load = async () => {
@@ -40,7 +44,8 @@ export default function KnowledgeBase() {
     <section className="knowledge-base__content">
         <p>Upload documents(PDF)</p>
         <UploadArea
-        onFileSelect={handleFileSelect}>
+        onFileSelect={handleFileSelect}
+        isUploading={isUploading}>
         </UploadArea>
         <section className="document-list">
           {isLoading && (
@@ -73,10 +78,6 @@ export default function KnowledgeBase() {
             <p>No Documents yet.</p>
           )}
       </section>
-        <button 
-            className="knowledge-base__button">
-        Save
-        </button>
     </section>
     </div>;
 }
