@@ -107,12 +107,15 @@ export default function Chat() {
     
       try {
         const res = await sendMessage(activeChatId, text);
-        if (res.data) {
+        const responseData = res.data;
+        if (!responseData) {
+          throw new Error("Message response is empty");
+        }
+
         setMessages((prev) => [
             ...prev.filter((m) => m._id !== userMessage._id),
-            ...res.data?.messages!,
+          ...responseData.messages,
         ]);
-        }
     } catch {
       const errorMessage: Message = {
         _id: Date.now().toString(),
