@@ -96,7 +96,7 @@ export default function KnowledgeBase() {
           )}
 
           {!isLoading && !error && documents.length === 0 && (
-            <p>No Documents yet.</p>
+            <p>No Documents Yet.</p>
           )}
       </section>
     </section>
