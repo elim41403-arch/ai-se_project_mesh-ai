@@ -13,8 +13,8 @@ const app = express();
 
 app.use(express.json());
 app.use(requestLogger);
-app.use(router);
 app.set('trust proxy', 1);
+app.use(router);
 
 app.get("/health", (req, res): void => {
     res.status(200).json({
