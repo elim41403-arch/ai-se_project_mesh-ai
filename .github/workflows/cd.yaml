@@ -34,7 +34,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           script: |
-            cd ~/OneDrive/Desktop/workspace/ai-se_project_mesh-ai
+            cd ~/apps/ai-se_project_mesh-ai
             git pull
             sudo docker compose up --build -d
       - name: Close SSH
