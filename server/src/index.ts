@@ -14,7 +14,6 @@ const app = express();
 app.use(express.json());
 app.use(requestLogger);
 app.use(router);
-app.use('/api', router);
 app.set('trust proxy', 1);
 
 app.get("/health", (req, res): void => {
