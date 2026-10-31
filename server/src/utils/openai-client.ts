@@ -1,6 +1,6 @@
 import OpenAI from 'openai';
 
-export const LLM_MODEL = 'Qwen/Qwen3-32B';
+export const LLM_MODEL = 'nvidia/Nemotron-3_5-Lightning';
 
 let client: OpenAI;
 
